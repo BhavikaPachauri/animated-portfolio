@@ -7,15 +7,21 @@ const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit", display: 
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "JD Studio — Creative Developer Portfolio",
-  description: "Immersive 3D portfolio showcasing cutting-edge web experiences, creative development, and modern design.",
-  keywords: ["portfolio", "developer", "creative", "3D", "web design"],
+  title: "Bhavika Pachauri — Full Stack Developer",
+  description: "Full Stack Developer with expertise in React, Next.js, Node.js, and modern web technologies. Building scalable, immersive digital experiences.",
+  keywords: ["Bhavika Pachauri", "Full Stack Developer", "React", "Next.js", "Node.js", "TypeScript", "Web Developer"],
+  authors: [{ name: "Bhavika Pachauri" }],
+  openGraph: {
+    title: "Bhavika Pachauri — Full Stack Developer",
+    description: "Building scalable web applications with modern technologies.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable} ${jetbrains.variable}`}>
-      <body style={{ fontFamily: "var(--font-body)", background: "var(--color-bg)", color: "var(--color-text-primary)" }}>
+      <body>
         {children}
       </body>
     </html>

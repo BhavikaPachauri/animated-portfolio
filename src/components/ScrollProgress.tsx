@@ -12,7 +12,6 @@ export default function ScrollProgress() {
   useEffect(() => {
     const bar = barRef.current;
     if (!bar) return;
-
     gsap.to(bar, {
       scaleX: 1,
       ease: "none",
@@ -26,7 +25,14 @@ export default function ScrollProgress() {
   }, []);
 
   return (
-    <div ref={barRef} className="fixed top-0 left-0 right-0 h-[2px] z-[10000] origin-left"
-      style={{ transform: "scaleX(0)", background: "#00ff41", boxShadow: "0 0 10px rgba(0,255,65,0.5)" }} />
+    <div
+      ref={barRef}
+      className="fixed top-0 left-0 right-0 h-[2px] z-[10000] origin-left"
+      style={{
+        transform: "scaleX(0)",
+        background: "linear-gradient(90deg, #a855f7, #00d4ff)",
+        boxShadow: "0 0 12px rgba(0,212,255,0.5)",
+      }}
+    />
   );
 }

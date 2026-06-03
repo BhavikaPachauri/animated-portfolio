@@ -1,173 +1,410 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import GlitchText from "@/components/GlitchText";
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface Project {
-  title: string;
-  description: string;
-  image: string;
-  techStack: string[];
-  liveUrl: string;
-  githubUrl: string;
-  codename: string;
-}
-
-const projects: Project[] = [
+const PROJECTS = [
   {
-    title: "Nebula Dashboard",
-    codename: "PROJECT_NEBULA",
-    description: "Real-time analytics dashboard with 3D data visualization and AI-powered insights for enterprise-level monitoring systems.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&q=80",
-    techStack: ["React", "Three.js", "D3.js", "Node.js"],
-    liveUrl: "#", githubUrl: "#",
+    id: "01",
+    title: "School ERP System",
+    type: "Frontend",
+    description: "Responsive ERP interface managing student records, attendance, fee modules and academic data. Reusable UI components, dynamic forms, REST API integration.",
+    image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200&q=85",
+    stack: ["React.js", "JavaScript", "Material UI", "REST APIs"],
+    year: "2024",
   },
   {
-    title: "Aurora Commerce",
-    codename: "PROJECT_AURORA",
-    description: "Premium e-commerce platform with cinematic product reveals, AI personalization, and real-time inventory management.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&q=80",
-    techStack: ["Next.js", "Stripe", "Prisma", "Tailwind"],
-    liveUrl: "#", githubUrl: "#",
+    id: "02",
+    title: "Sangam Challengers Website",
+    type: "Frontend + SEO",
+    description: "High-performance business website with SSR, structured metadata, sitemap config and performance optimization for maximum search visibility.",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=85",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "SEO"],
+    year: "2024",
   },
   {
-    title: "Cipher Network",
-    codename: "PROJECT_CIPHER",
-    description: "End-to-end encrypted communication platform with zero-knowledge architecture and real-time WebRTC collaboration.",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=900&q=80",
-    techStack: ["Rust", "WebRTC", "PostgreSQL", "AWS"],
-    liveUrl: "#", githubUrl: "#",
+    id: "03",
+    title: "E-Commerce Platform",
+    type: "Full Stack",
+    description: "Scalable e-commerce with product catalog, cart system, authentication and Stripe payments. Optimized RESTful APIs for order and payment processing.",
+    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&q=85",
+    stack: ["React.js", "Node.js", "Express.js", "Stripe", "MySQL"],
+    year: "2024",
   },
   {
-    title: "Synthwave Engine",
-    codename: "PROJECT_SYNTH",
-    description: "WebAudio-powered music production tool with real-time waveform visualization, collaborative mixing, and AI composition.",
-    image: "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=900&q=80",
-    techStack: ["TypeScript", "WebAudio", "Canvas", "Firebase"],
-    liveUrl: "#", githubUrl: "#",
+    id: "04",
+    title: "Admin Dashboard",
+    type: "Backend-Focused",
+    description: "Role-based admin panel with dynamic permission management and reporting. Optimized MySQL schemas, secure JWT auth, modular REST APIs.",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=85",
+    stack: ["Next.js", "Node.js", "MySQL", "JWT Auth"],
+    year: "2024",
+  },
+  {
+    id: "05",
+    title: "Portfolio Website",
+    type: "SEO + Performance",
+    description: "Personal portfolio with SSR, responsive layouts, image optimization and metadata management for fast loading and improved search rankings.",
+    image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=1200&q=85",
+    stack: ["Next.js", "TypeScript", "GSAP", "Three.js"],
+    year: "2025",
   },
 ];
 
-function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const cardRef = useRef<HTMLDivElement>(null);
+/* ── Single project row ── */
+function ProjectRow({
+  project,
+  index,
+  isActive,
+  onEnter,
+  onLeave,
+}: {
+  project: typeof PROJECTS[0];
+  index: number;
+  isActive: boolean;
+  onEnter: () => void;
+  onLeave: () => void;
+}) {
+  const rowRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const card = cardRef.current;
-    if (!card) return;
+    const el = rowRef.current;
+    if (!el) return;
     const ctx = gsap.context(() => {
-      gsap.fromTo(card,
-        { y: 120, opacity: 0, rotateX: 8 },
-        { y: 0, opacity: 1, rotateX: 0, duration: 1, ease: "expo.out",
-          scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none none" },
+      gsap.fromTo(el,
+        { y: 40, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.7, ease: "expo.out",
+          delay: index * 0.08,
+          scrollTrigger: { trigger: el, start: "top 88%", toggleActions: "play none none none" },
         }
       );
-    }, card);
+    }, el);
     return () => ctx.revert();
   }, [index]);
 
+  // Animate the bottom line on hover
+  useEffect(() => {
+    const line = lineRef.current;
+    if (!line) return;
+    gsap.to(line, {
+      scaleX: isActive ? 1 : 0,
+      duration: 0.4,
+      ease: "expo.out",
+      transformOrigin: "left center",
+    });
+  }, [isActive]);
+
   return (
-    <motion.div ref={cardRef} className="project-card group relative h-[500px] md:h-[600px] cursor-pointer border border-[rgba(0,255,65,0.06)] hover:border-[rgba(0,255,65,0.2)]"
-      whileHover={{ scale: 1.02 }} transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}>
-      <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
-        style={{ backgroundImage: `url('${project.image}')` }} />
-      <div className="absolute inset-0 bg-gradient-to-t from-[rgba(5,5,5,0.95)] via-[rgba(5,5,5,0.4)] to-[rgba(5,5,5,0.2)] opacity-80 group-hover:opacity-95 transition-opacity duration-500 z-[1]" />
+    <div
+      ref={rowRef}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+      className="group relative cursor-pointer"
+      style={{ opacity: 0 }}
+    >
+      {/* Top divider */}
+      <div className="w-full h-[1px]" style={{ background: "rgba(0,255,65,0.08)" }} />
 
-      {/* Grid overlay on hover */}
-      <div className="absolute inset-0 z-[2] opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{
-        backgroundImage: "linear-gradient(rgba(0,255,65,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,65,0.03) 1px, transparent 1px)",
-        backgroundSize: "30px 30px",
-      }} />
+      <div className="flex items-center gap-4 md:gap-8 py-5 px-2 transition-all duration-300"
+        style={{ background: isActive ? "rgba(0,255,65,0.025)" : "transparent" }}>
 
-      {/* Top label */}
-      <div className="absolute top-5 left-5 z-[3] flex items-center gap-3">
-        <span className="text-[10px] tracking-[0.15em] uppercase px-2 py-1 rounded border border-[rgba(0,255,65,0.2)]"
-          style={{ color: "#00ff41", fontFamily: "var(--font-mono)", background: "rgba(0,255,65,0.05)" }}>
-          [{String(index + 1).padStart(2, "0")}]
+        {/* Number */}
+        <span className="text-[11px] w-8 flex-shrink-0 tabular-nums"
+          style={{ color: isActive ? "#00ff41" : "rgba(0,255,65,0.2)", fontFamily: "var(--font-mono)", transition: "color 0.3s" }}>
+          {project.id}
         </span>
-        <span className="text-[10px] tracking-[0.1em]" style={{ color: "rgba(0,255,65,0.4)", fontFamily: "var(--font-mono)" }}>
-          {project.codename}
-        </span>
-      </div>
 
-      {/* Corner brackets */}
-      <div className="absolute top-4 right-4 w-8 h-8 border-t border-r border-[rgba(0,255,65,0.15)] z-[3] opacity-0 group-hover:opacity-100 transition-opacity" />
-      <div className="absolute bottom-4 left-4 w-8 h-8 border-b border-l border-[rgba(0,255,65,0.15)] z-[3] opacity-0 group-hover:opacity-100 transition-opacity" />
-
-      {/* Content */}
-      <div className="absolute bottom-0 left-0 right-0 p-7 md:p-9 z-[3] transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
-        <h3 className="text-[26px] md:text-[32px] font-bold tracking-[-0.02em] mb-2 leading-tight" style={{ fontFamily: "var(--font-display)" }}>
+        {/* Title */}
+        <h3 className="flex-1 font-bold tracking-[-0.02em] transition-all duration-300"
+          style={{
+            fontSize: "clamp(1rem, 2.5vw, 1.6rem)",
+            color: isActive ? "#00ff41" : "rgba(232,255,232,0.85)",
+            textShadow: isActive ? "0 0 30px rgba(0,255,65,0.3)" : "none",
+          }}>
           {project.title}
         </h3>
-        <p className="text-[var(--color-text-secondary)] text-[13px] leading-relaxed mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 max-w-md" style={{ fontFamily: "var(--font-mono)" }}>
-          {project.description}
-        </p>
-        <div className="flex flex-wrap gap-2 mb-5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-150">
-          {project.techStack.map((tech) => (
-            <span key={tech} className="text-[10px] tracking-[0.05em] uppercase px-3 py-[5px] rounded border border-[rgba(0,255,65,0.12)]"
-              style={{ color: "#00ff41", fontFamily: "var(--font-mono)", background: "rgba(0,255,65,0.04)" }}>
-              {tech}
+
+        {/* Type badge — hide on small screens */}
+        <span className="hidden sm:block text-[9px] tracking-[0.15em] uppercase px-2.5 py-1 flex-shrink-0 transition-all duration-300"
+          style={{
+            border: `1px solid ${isActive ? "rgba(0,255,65,0.3)" : "rgba(0,255,65,0.1)"}`,
+            color: isActive ? "#00ff41" : "rgba(0,255,65,0.3)",
+            fontFamily: "var(--font-mono)",
+            background: isActive ? "rgba(0,255,65,0.05)" : "transparent",
+          }}>
+          {project.type}
+        </span>
+
+        {/* Tech stack — only on large screens */}
+        <div className="hidden lg:flex items-center gap-1.5 flex-shrink-0">
+          {project.stack.slice(0, 3).map(t => (
+            <span key={t} className="text-[8px] tracking-[0.06em] uppercase px-2 py-0.5 transition-colors duration-300"
+              style={{
+                color: isActive ? "rgba(0,255,65,0.7)" : "rgba(0,255,65,0.18)",
+                fontFamily: "var(--font-mono)",
+                border: `1px solid ${isActive ? "rgba(0,255,65,0.2)" : "rgba(0,255,65,0.06)"}`,
+              }}>
+              {t}
             </span>
           ))}
         </div>
-        <div className="flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
-          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-[8px] rounded text-[11px] tracking-[0.05em] uppercase font-medium transition-all duration-300"
-            style={{ background: "#00ff41", color: "#050505", fontFamily: "var(--font-mono)" }}>
-            <span>./deploy</span>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </a>
-          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-[8px] rounded border border-[rgba(0,255,65,0.2)] text-[11px] tracking-[0.05em] uppercase hover:border-[#00ff41] hover:text-[#00ff41] transition-all duration-300"
-            style={{ color: "var(--color-text-secondary)", fontFamily: "var(--font-mono)" }}>
-            <span>./source</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
-          </a>
-        </div>
+
+        {/* Year */}
+        <span className="hidden md:block text-[10px] flex-shrink-0 tabular-nums"
+          style={{ color: isActive ? "rgba(0,255,65,0.5)" : "rgba(0,255,65,0.15)", fontFamily: "var(--font-mono)", transition: "color 0.3s" }}>
+          {project.year}
+        </span>
+
+        {/* Arrow */}
+        <motion.span
+          animate={{ x: isActive ? 0 : -6, opacity: isActive ? 1 : 0 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="text-[14px] flex-shrink-0"
+          style={{ color: "#00ff41" }}
+        >
+          →
+        </motion.span>
       </div>
-    </motion.div>
+
+      {/* Active line */}
+      <div ref={lineRef} className="absolute bottom-0 left-0 right-0 h-[1px]"
+        style={{ background: "linear-gradient(90deg, #00ff41, rgba(0,255,65,0.2))", transform: "scaleX(0)", transformOrigin: "left" }} />
+    </div>
   );
 }
 
+/* ── Main component ── */
 export default function Projects() {
-  const titleRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const titleRef   = useRef<HTMLDivElement>(null);
+  const imgRef     = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  const [displayIdx, setDisplayIdx] = useState(0);
+
+  useEffect(() => {
+    if (activeIdx !== null) setDisplayIdx(activeIdx);
+  }, [activeIdx]);
 
   useEffect(() => {
     const el = titleRef.current;
     if (!el) return;
     const ctx = gsap.context(() => {
-      gsap.fromTo(el, { y: 60, opacity: 0 }, {
-        y: 0, opacity: 1, duration: 0.8, ease: "expo.out",
-        scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" },
-      });
+      // Stagger header elements
+      const items = el.querySelectorAll(".proj-header-item");
+      gsap.fromTo(items,
+        { y: 40, opacity: 0 },
+        {
+          y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: "expo.out",
+          scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" },
+        }
+      );
     }, el);
     return () => ctx.revert();
   }, []);
 
+  // Image parallax on hover
+  useEffect(() => {
+    const img = imgRef.current;
+    if (!img) return;
+    gsap.to(img, {
+      scale: activeIdx !== null ? 1.05 : 1,
+      duration: 0.8,
+      ease: "expo.out",
+    });
+  }, [activeIdx]);
+
+  const activeProject = PROJECTS[displayIdx];
+
   return (
-    <section id="projects" className="section-padding relative">
+    <section ref={sectionRef} id="projects" className="section-padding relative overflow-hidden">
+      {/* Background */}
       <div className="absolute inset-0 opacity-[0.02]" style={{
         backgroundImage: "linear-gradient(rgba(0,255,65,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,65,0.3) 1px, transparent 1px)",
-        backgroundSize: "40px 40px",
+        backgroundSize: "50px 50px",
       }} />
+      <div className="absolute inset-0" style={{
+        background: "radial-gradient(ellipse 50% 60% at 80% 50%, rgba(0,255,65,0.04) 0%, transparent 70%)",
+      }} />
+
       <div className="max-w-[1400px] mx-auto relative z-10">
-        <div ref={titleRef} className="mb-16">
-          <p className="text-[11px] tracking-[0.3em] uppercase mb-4" style={{ color: "#00ff41", fontFamily: "var(--font-mono)" }}>
-            $ ls -la ./projects/
+        {/* Header */}
+        <div ref={titleRef} className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+          <div>
+            <p className="proj-header-item section-accent" style={{ opacity: 0 }}>SELECTED WORK</p>
+            <h2 className="proj-header-item text-[clamp(2rem,5vw,3.5rem)] font-bold tracking-[-0.03em] text-gradient"
+              style={{ opacity: 0 }}>PROJECTS</h2>
+          </div>
+          <p className="proj-header-item text-[11px] max-w-xs"
+            style={{ color: "var(--color-text-secondary)", fontFamily: "var(--font-mono)", opacity: 0 }}>
+            // 5 production-grade projects — hover to explore each one
           </p>
-          <GlitchText text="DEPLOYED_WORK" as="h2" className="text-[clamp(2.5rem,5vw,4.5rem)] font-bold tracking-[-0.03em] leading-[1.1] text-[var(--color-text-primary)]" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects.map((project, i) => (
-            <ProjectCard key={project.title} project={project} index={i} />
+
+        {/* Main layout: list left, preview right */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] xl:grid-cols-[1fr_400px] gap-8 items-start">
+
+          {/* Project list */}
+          <div>
+            {PROJECTS.map((p, i) => (
+              <ProjectRow
+                key={p.id}
+                project={p}
+                index={i}
+                isActive={activeIdx === i}
+                onEnter={() => setActiveIdx(i)}
+                onLeave={() => setActiveIdx(null)}
+              />
+            ))}
+            {/* Bottom divider */}
+            <div className="w-full h-[1px]" style={{ background: "rgba(0,255,65,0.08)" }} />
+
+            {/* Description strip — appears below list on hover */}
+            <AnimatePresence mode="wait">
+              {activeIdx !== null && (
+                <motion.div
+                  key={activeIdx}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  className="mt-5 px-2"
+                >
+                  <p className="text-[11px] leading-relaxed mb-3"
+                    style={{ color: "var(--color-text-secondary)", fontFamily: "var(--font-mono)", maxWidth: "540px" }}>
+                    <span style={{ color: "#00ff41" }}>//</span> {PROJECTS[activeIdx].description}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {PROJECTS[activeIdx].stack.map(t => (
+                      <span key={t} className="text-[8px] tracking-[0.08em] uppercase px-2.5 py-1"
+                        style={{ color: "#00ff41", fontFamily: "var(--font-mono)", border: "1px solid rgba(0,255,65,0.2)", background: "rgba(0,255,65,0.04)" }}>
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex gap-2 mt-4">
+                    <button className="inline-flex items-center gap-2 px-4 py-2 text-[10px] tracking-[0.08em] uppercase font-bold transition-all duration-200 hover:bg-[#00cc33]"
+                      style={{ background: "#00ff41", color: "#050505", fontFamily: "var(--font-mono)", border: "none", cursor: "pointer" }}>
+                      View Project →
+                    </button>
+                    <button className="inline-flex items-center gap-2 px-4 py-2 text-[10px] tracking-[0.08em] uppercase transition-all duration-200 cursor-pointer"
+                      style={{ border: "1px solid rgba(0,255,65,0.2)", color: "rgba(0,255,65,0.5)", fontFamily: "var(--font-mono)", background: "transparent" }}>
+                      Source Code
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Image preview — sticky on desktop */}
+          <div className="hidden lg:block sticky top-24">
+            <div className="relative overflow-hidden" style={{ aspectRatio: "4/3", border: "1px solid rgba(0,255,65,0.1)" }}>
+              {/* Image */}
+              <div
+                ref={imgRef}
+                className="absolute inset-0 bg-cover bg-center transition-none"
+                style={{
+                  backgroundImage: `url('${activeProject.image}')`,
+                  filter: "brightness(0.55) saturate(0.3)",
+                }}
+              />
+
+              {/* Green overlay */}
+              <div className="absolute inset-0" style={{
+                background: "linear-gradient(to top, rgba(5,5,5,0.85) 0%, rgba(5,5,5,0.3) 60%, transparent 100%)",
+              }} />
+
+              {/* Active tint on hover */}
+              <AnimatePresence>
+                {activeIdx !== null && (
+                  <motion.div
+                    key="tint"
+                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    className="absolute inset-0"
+                    style={{ background: "rgba(0,255,65,0.06)", mixBlendMode: "screen" }}
+                  />
+                )}
+              </AnimatePresence>
+
+              {/* Corner brackets */}
+              <div className="absolute top-3 left-3 w-5 h-5 border-t border-l" style={{ borderColor: "rgba(0,255,65,0.3)" }} />
+              <div className="absolute top-3 right-3 w-5 h-5 border-t border-r" style={{ borderColor: "rgba(0,255,65,0.3)" }} />
+              <div className="absolute bottom-3 left-3 w-5 h-5 border-b border-l" style={{ borderColor: "rgba(0,255,65,0.3)" }} />
+              <div className="absolute bottom-3 right-3 w-5 h-5 border-b border-r" style={{ borderColor: "rgba(0,255,65,0.3)" }} />
+
+              {/* Image number + codename */}
+              <div className="absolute bottom-4 left-4 right-4">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={displayIdx}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <p className="text-[9px] tracking-[0.2em] uppercase mb-1"
+                      style={{ color: "rgba(0,255,65,0.4)", fontFamily: "var(--font-mono)" }}>
+                      [{activeProject.id}] — {activeProject.type}
+                    </p>
+                    <p className="text-[15px] font-bold tracking-[-0.01em]"
+                      style={{ color: "#e8ffe8" }}>
+                      {activeProject.title}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Scanline */}
+              <div className="absolute left-0 right-0 h-[1px] pointer-events-none"
+                style={{
+                  background: "linear-gradient(90deg, transparent, rgba(0,255,65,0.2), transparent)",
+                  top: `${(displayIdx / (PROJECTS.length - 1)) * 80 + 10}%`,
+                  transition: "top 0.5s cubic-bezier(0.16,1,0.3,1)",
+                }} />
+            </div>
+
+            {/* Index dots */}
+            <div className="flex items-center justify-center gap-2 mt-3">
+              {PROJECTS.map((_, i) => (
+                <div key={i} className="transition-all duration-300 rounded-full"
+                  style={{
+                    width: displayIdx === i ? "16px" : "4px",
+                    height: "3px",
+                    background: displayIdx === i ? "#00ff41" : "rgba(0,255,65,0.2)",
+                    boxShadow: displayIdx === i ? "0 0 6px rgba(0,255,65,0.4)" : "none",
+                  }} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile: compact card grid for < lg */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-8 lg:hidden">
+          {PROJECTS.map((p, i) => (
+            <motion.div
+              key={p.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.07, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true }}
+              className="relative overflow-hidden group"
+              style={{ aspectRatio: "16/9", border: "1px solid rgba(0,255,65,0.1)" }}
+            >
+              <div className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
+                style={{ backgroundImage: `url('${p.image}')`, filter: "brightness(0.4) saturate(0.2)" }} />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(5,5,5,0.95) 0%, transparent 60%)" }} />
+              <div className="absolute bottom-0 left-0 right-0 p-3">
+                <p className="text-[7px] tracking-[0.15em] uppercase mb-0.5" style={{ color: "rgba(0,255,65,0.4)", fontFamily: "var(--font-mono)" }}>[{p.id}]</p>
+                <h3 className="text-[13px] font-bold leading-tight">{p.title}</h3>
+                <p className="text-[9px] mt-1" style={{ color: "rgba(0,255,65,0.4)", fontFamily: "var(--font-mono)" }}>{p.type}</p>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>
