@@ -22,7 +22,7 @@ const STACK_COLS = [
   },
   {
     heading: "BACKEND",
-    items: ["Node.js", "Express.js", "Python", "Django", "REST APIs", "JWT Auth"],
+    items: ["Node.js", "Express.js",  "REST APIs", "JWT Auth"],
   },
   {
     heading: "DATABASE & TOOLS",
@@ -260,7 +260,7 @@ export default function Model3D() {
             className="flex gap-12 whitespace-nowrap"
           >
             {[...Array(2)].map((_, ri) =>
-              ["React.js", "Next.js", "Node.js", "TypeScript", "MySQL", "Express.js", "Python", "Django", "Tailwind CSS", "Material UI", "Git", "REST APIs"].map((t) => (
+              ["React.js", "Next.js", "Node.js", "TypeScript", "MySQL", "Express.js",  "Tailwind CSS", "Material UI", "Git", "REST APIs"].map((t) => (
                 <span key={`${ri}-${t}`} className="text-[10px] tracking-[0.2em] uppercase"
                   style={{ color: "rgba(0,255,65,0.2)", fontFamily: "var(--font-mono)" }}>
                   {t} <span style={{ color: "rgba(0,255,65,0.1)", margin: "0 12px" }}>◆</span>

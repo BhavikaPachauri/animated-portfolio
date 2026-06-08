@@ -152,7 +152,7 @@
             className="mt-8 max-w-md mx-auto text-[13px] leading-relaxed"
             style={{ color: "var(--color-text-secondary)", fontFamily: "var(--font-mono)" }}
           >
-            <span style={{ color: "#00ff41" }}>$</span> Full Stack Developer crafting scalable web apps with React, Next.js &amp; Node.js.
+            <span  style={{ color: "#00ff41" }}>$</span> Full Stack Developer crafting scalable web apps with React, Next.js &amp; Node.js.
           </motion.p>
 
           <motion.div

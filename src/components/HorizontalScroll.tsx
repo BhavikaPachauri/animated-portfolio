@@ -35,13 +35,7 @@ const PANELS = [
     tag: "Tailwind · Material UI · CSS",
     img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&q=85",
   },
-  {
-    id: "05",
-    title: "HACK",
-    subtitle: "Problem Solving",
-    tag: "TypeScript · Python · Logic",
-    img: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&q=85",
-  },
+ 
 ];
 
 export default function HorizontalScroll() {

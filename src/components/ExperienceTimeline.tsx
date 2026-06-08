@@ -159,7 +159,7 @@ export default function ExperienceTimeline() {
   return (
     <section ref={sectionRef} id="experience" className="section-padding relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.02]" style={{
-        backgroundImage: "linear-gradient(rgba(0,255,65,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,65,0.4) 1px, transparent 1px)",
+        backgroundImage: "linear-gradient(rgbQ  a(0,255,65,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,65,0.4) 1px, transparent 1px)",
         backgroundSize: "50px 50px",
       }} />
 
@@ -182,8 +182,8 @@ export default function ExperienceTimeline() {
 
         <div className="relative">
           {/* Vertical line */}
-          <div ref={lineRef} className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[1px]"
-            style={{ background: "linear-gradient(180deg, transparent, rgba(0,255,65,0.2) 20%, rgba(0,255,65,0.2) 80%, transparent)" }} />
+          <div ref={lineRef} className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[3px]"
+            style={{ background: "linear-gradient(180deg, transparent, rgba(0, 255, 64, 0.57) 20%, rgba(0, 255, 64, 0.49) 80%, transparent)" }} />
           {EXPERIENCES.map((exp, i) => <ExpCard key={exp.id} exp={exp} index={i} />)}
         </div>
 

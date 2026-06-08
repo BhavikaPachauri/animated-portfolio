@@ -16,8 +16,6 @@ const SKILLS = [
   { name: "TypeScript",  angle: 1.4,  radius: 2.6, speed: 0.45 },
   { name: "Node.js",     angle: 2.1,  radius: 3.0, speed: 0.38 },
   { name: "Express.js",  angle: 2.8,  radius: 2.5, speed: 0.5  },
-  { name: "Python",      angle: 3.5,  radius: 3.3, speed: 0.32 },
-  { name: "Django",      angle: 4.2,  radius: 2.7, speed: 0.42 },
   { name: "MySQL",       angle: 4.9,  radius: 3.1, speed: 0.36 },
   { name: "Tailwind",    angle: 5.6,  radius: 2.9, speed: 0.43 },
   { name: "Material UI", angle: 0.35, radius: 3.4, speed: 0.33 },
@@ -71,10 +69,10 @@ function CentralSphere() {
     <group>
       <mesh>
         <sphereGeometry args={[1.0, 24, 24]} />
-        <meshBasicMaterial color="#00ff41" transparent opacity={0.04} />
+        <meshBasicMaterial color="#00ff41"transparent opacity={0.04} />
       </mesh>
       <Sphere ref={meshRef} args={[0.7, 48, 48]}>
-        <MeshDistortMaterial color="#050505" emissive="#001a00" emissiveIntensity={0.6}
+        <MeshDistortMaterial color="#050505" emissive="#006700ad" emissiveIntensity={0.6}
           distort={0.2} speed={2} roughness={0.2} metalness={0.8} />
       </Sphere>
       <mesh>
@@ -95,7 +93,7 @@ function OrbitRings() {
       {[2.6, 3.0, 3.4].map((r, i) => (
         <mesh key={r} rotation={[Math.PI / 2 + (i * 0.1), 0, i * 0.2]}>
           <torusGeometry args={[r, 0.003, 6, 100]} />
-          <meshBasicMaterial color="#00ff41" transparent opacity={0.05} />
+          <meshBasicMaterial color="#00ff41" transparent opacity={0.9} />
         </mesh>
       ))}
     </>
@@ -142,7 +140,7 @@ export default function SkillsOrbit() {
         backgroundSize: "50px 50px",
       }} />
       <div className="absolute inset-0" style={{
-        background: "radial-gradient(ellipse 60% 50% at 50% 60%, rgba(0,255,65,0.04) 0%, transparent 70%)",
+        background: "radial-gradient(ellipse 60% 50% at 50% 60%, rgba(0, 255, 64, 0.48) 0%, transparent 70%)",
       }} />
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 relative z-10">
@@ -181,8 +179,7 @@ export default function SkillsOrbit() {
           viewport={{ once: true }}
           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mt-4"
         >
-          {["React.js ⚛", "Next.js ▲", "TypeScript TS", "Node.js ⬡", "Express.js ⚙", "Python 🐍",
-            "Django ◆", "MySQL 🛢", "Tailwind ◎", "Material UI ■", "Git/GitHub ⌥", "JavaScript ◐"].map((s, i) => (
+          {["React.js ⚛", "Next.js ▲", "TypeScript TS", "Node.js ⬡", "Express.js ⚙", "MySQL 🛢", "Tailwind ◎", "Material UI ■", "Git/GitHub ⌥", "JavaScript ◐"].map((s, i) => (
             <motion.div key={s}
               initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.03 }} viewport={{ once: true }}

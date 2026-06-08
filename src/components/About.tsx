@@ -8,12 +8,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const SKILLS_BARS = [
-  { name: "React.js / Next.js",       level: 92 },
-  { name: "JavaScript / TypeScript",  level: 88 },
-  { name: "Node.js / Express.js",     level: 85 },
+  { name: "React.js / Next.js",       level: 85 },
+  { name: "JavaScript / TypeScript",  level: 75 },
+  { name: "Node.js / Express.js",     level: 80 },
   { name: "HTML5 / CSS3 / Tailwind",  level: 90 },
-  { name: "Python / Django",          level: 76 },
-  { name: "MySQL / Databases",        level: 82 },
+  { name: "MySQL / Databases",        level: 75 },
 ];
 
 function SkillBar({ name, level, index }: { name: string; level: number; index: number }) {
